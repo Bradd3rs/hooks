@@ -11,15 +11,10 @@ function App() {
     setcount(count + 1)
   }
 
-  function minus() {
-    if(count > 0) setcount(count - 1)
-  }
-
   return (
     <div>
       <h1>Hooks</h1>
       <p>{count}</p>
-      <button type="button" onClick={minus}>-</button>
       <button type="button" onClick={add}>+</button>
     </div>
   )
