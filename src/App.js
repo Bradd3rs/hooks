@@ -88,9 +88,11 @@ function App() {
       <p>Zombies: {zombies} <span>D: {defence}</span></p>
       <p>Scrap: {scrap}</p>
       <p>{message}</p>
-      <Button color="green" onClick={attack} active={attacking} cooldown={attackingCooldown} text={`Attack lvl ${level}`} locked={lock} />
-      <Button color="red" onClick={hunt} active={hunting} cooldown={huntingCooldown} text={'Hunt'} locked={lock} />
-      <Button color="purple" onClick={craft} active={crafting} cooldown={craftingCooldown} text={'Craft'} locked={lock} />
+      <ButtonContainer>
+        <Button color="green" onClick={attack} active={attacking} cooldown={attackingCooldown} text={`Attack`} locked={lock} />
+        <Button color="red" onClick={hunt} active={hunting} cooldown={huntingCooldown} text={'Hunt'} locked={lock} />
+        <Button color="purple" onClick={craft} active={crafting} cooldown={craftingCooldown} text={'Craft'} locked={lock} />
+      </ButtonContainer>
     </Container>
   )
 }
@@ -98,4 +100,22 @@ function App() {
 export default App;
 
 
-const Container = styled.div``;
+const Container = styled.div`
+  box-sizing: border-box;
+  position: relative;
+  height: 100vh;
+  background-color: #232931;
+  color: #4ecca3;
+`;
+
+const ButtonContainer = styled.div`
+  background-color: #393e46;
+  text-align: center;
+  position: absolute;
+  margin: auto;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  box-shadow: -1px 9px 19px 4px rgba(0,0,0,0.75);
+`;
