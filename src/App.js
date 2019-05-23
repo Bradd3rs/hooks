@@ -85,9 +85,12 @@ function App() {
 
   return (
     <Container>
-      <p>Zombies: {zombies} <span>D: {defence}</span></p>
+      <p>Zombies: {zombies}</p>
+      <p>Defence: {defence}</p>
       <p>Scrap: {scrap}</p>
-      <p>{message}</p>
+      <MessageContainer>
+        <p>{message}</p>
+      </MessageContainer>
       <ButtonContainer>
         <Button color="green" onClick={attack} active={attacking} cooldown={attackingCooldown} text={`Attack`} locked={lock} />
         <Button color="red" onClick={hunt} active={hunting} cooldown={huntingCooldown} text={'Hunt'} locked={lock} />
@@ -101,11 +104,15 @@ export default App;
 
 
 const Container = styled.div`
+  padding: 10px;
+  font-size: 30px;
   box-sizing: border-box;
   position: relative;
   height: 100vh;
   background-color: #232931;
   color: #4ecca3;
+  max-width: 800px;
+  margin: auto;
 `;
 
 const ButtonContainer = styled.div`
@@ -114,8 +121,18 @@ const ButtonContainer = styled.div`
   position: absolute;
   margin: auto;
   bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   box-shadow: -1px 9px 19px 4px rgba(0,0,0,0.75);
+`;
+
+const MessageContainer = styled.div`
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  text-align: center;
 `;
