@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import huntHelper from './huntHelper';
 import Attack from './attackHelper';
 import Button from './components/buttons/Button';
+import Zombie from './components/Zombie';
 
 function App() {
   const [zombies, setZombies] = useState(1);
@@ -83,11 +84,19 @@ function App() {
     } else setMessage(`You don't have enough scrap!`)
   }
 
+  function setPosition() {
+    return Math.floor(Math.random() * 100) + 1;
+  }
+
   return (
     <Container>
       <p>Zombies: {zombies}</p>
       <p>Defence: {defence}</p>
       <p>Scrap: {scrap}</p>
+      <ZombieContainer>
+        <Zombie position={setPosition} />
+        <Zombie position={setPosition} />
+      </ZombieContainer>
       <MessageContainer>
         <p>{message}</p>
       </MessageContainer>
@@ -113,6 +122,11 @@ const Container = styled.div`
   color: #4ecca3;
   max-width: 800px;
   margin: auto;
+`;
+
+const ZombieContainer = styled.div`
+  position: relative;
+  height: 50vh;
 `;
 
 const ButtonContainer = styled.div`
