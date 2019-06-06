@@ -16,17 +16,15 @@ export default Button;
 const Container = styled.div`
   position: relative;
   padding: 10px;
-  margin: 5px;
   color: #4ecca3;
-  border-radius: 4px;
+  border-radius: 2px;
   /* background-color: ${props => props.color || 'rebeccapurple'}; */
-  background-color: transparent;
-  /* border 3px solid ${props => props.color || 'rebeccapurple'}; */
   text-align: center;
   opacity: 1;
   transition: opacity .2s;
   font-size: 40px;
   font-weight: 700;
+  width: 100%;
 
   &.locked {
     pointer-events: none;

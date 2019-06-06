@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+import Storage from './storage';
+
 import huntHelper from './huntHelper';
 import Attack from './attackHelper';
 import Button from './components/buttons/Button';
-import Zombie from './components/Zombie';
 
 function App() {
   const [zombies, setZombies] = useState(1);
@@ -19,16 +20,37 @@ function App() {
   const [huntingCooldown, setHuntingCooldown] = useState(5);
   const [crafting, setCrafting] = useState(false);
   const [craftingCooldown, setCraftingCooldown] = useState(5);
+  const [mounted, setMounted] = useState(false);
   // const [items, setItems] = useState(0);
   
   useEffect(() => {
-    setCraftingCooldown(scrap / 5)
+    setCraftingCooldown(scrap / 5);
+    setMounted(true);
+
+    if(!mounted && Storage.get('data')) {
+      const data = Storage.get('data');
+
+      setZombies(data.zombies)
+      setDefence(data.defence)
+      setScrap(data.scrap)
+      setLevel(data.level)
+      
+    } else {
+      const data = {
+        zombies,
+        defence,
+        scrap,
+        level
+      }
+      Storage.set('data', data)
+    }
     console.log('useEffect');
   }, [scrap])
 
   function hunt() {
     setHunting(true);
     setLock(true);
+    
     const zombiesGained = huntHelper(zombies);
 
     setTimeout(() => {
@@ -84,26 +106,25 @@ function App() {
     } else setMessage(`You don't have enough scrap!`)
   }
 
-  function setPosition() {
-    return Math.floor(Math.random() * 100) + 1;
-  }
-
   return (
     <Container>
-      <p>Zombies: {zombies}</p>
-      <p>Defence: {defence}</p>
-      <p>Scrap: {scrap}</p>
-      <ZombieContainer>
-        <Zombie position={setPosition} />
-        <Zombie position={setPosition} />
-      </ZombieContainer>
-      <MessageContainer>
-        <p>{message}</p>
-      </MessageContainer>
+      <StatsContainer>
+        <p>Zombies: {zombies}</p>
+        <p>Defence: {defence}</p>
+        <p>Scrap: {scrap}</p>
+        <MessageContainer>
+          <p>{message}</p>
+        </MessageContainer>
+      </StatsContainer>
+      <Options>
+        <OptionList>
+          <Button color="red" onClick={hunt} active={hunting} cooldown={huntingCooldown} text={'Hunt'} locked={lock} />
+          <Button color="purple" onClick={craft} active={crafting} cooldown={craftingCooldown} text={'Craft'} locked={lock} />
+        </OptionList>
+        <Spacer />
+      </Options>
       <ButtonContainer>
-        <Button color="green" onClick={attack} active={attacking} cooldown={attackingCooldown} text={`Attack`} locked={lock} />
-        <Button color="red" onClick={hunt} active={hunting} cooldown={huntingCooldown} text={'Hunt'} locked={lock} />
-        <Button color="purple" onClick={craft} active={crafting} cooldown={craftingCooldown} text={'Craft'} locked={lock} />
+        <Button color="green" onClick={attack} active={attacking} cooldown={attackingCooldown} text={`Attack level ${level}`} locked={lock} />
       </ButtonContainer>
     </Container>
   )
@@ -111,6 +132,16 @@ function App() {
 
 export default App;
 
+const Spacer = styled.div`
+  height: 80px;
+  width: 100%;
+`;
+
+const OptionList = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+`;
 
 const Container = styled.div`
   padding: 10px;
@@ -118,34 +149,46 @@ const Container = styled.div`
   box-sizing: border-box;
   position: relative;
   height: 100vh;
-  background-color: #232931;
   color: #4ecca3;
   max-width: 800px;
   margin: auto;
 `;
 
-const ZombieContainer = styled.div`
+const StatsContainer = styled.div`
   position: relative;
-  height: 50vh;
+  background-color: #47505f;
+  border: 1px solid #4ecca3;
+  padding: 5px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+`;
+
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  margin: 10px;
+  bottom: 0;
+  right: 0;
+  left: 0;
 `;
 
 const ButtonContainer = styled.div`
-  background-color: #393e46;
   text-align: center;
   position: absolute;
-  margin: auto;
+  margin: 10px;
   bottom: 0;
   left: 0;
   right: 0;
-  width: 100%;
   display: flex;
   justify-content: space-evenly;
-  box-shadow: -1px 9px 19px 4px rgba(0,0,0,0.75);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  background-color: #47505f;
 `;
 
 const MessageContainer = styled.div`
   position: absolute;
-  bottom: 80px;
+  bottom: -40px;
   left: 0;
   right: 0;
   text-align: center;
